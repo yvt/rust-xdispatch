@@ -1,13 +1,11 @@
 [package]
-name = "dispatch"
+name = "xdispatch"
 version = "0.1.4"
-authors = ["Steven Sheldon"]
+authors = ["yvt <i@yvt.jp>", "Steven Sheldon (author of 'dispatch')"]
 
-description = "Rust wrapper for Apple's Grand Central Dispatch."
-keywords = ["gcd", "objective-c", "osx", "ios"]
-readme = "README.md"
-repository = "http://github.com/SSheldon/rust-dispatch"
-documentation = "http://ssheldon.github.io/rust-objc/dispatch/"
+description = "Use XDispatch without a hassle."
+keywords = ["gcd"]
+repository = "https://github.com/yvt/rust-xdispatch"
 license = "MIT"
 
 exclude = [
@@ -17,3 +15,6 @@ exclude = [
   "travis_test.sh",
   "tests-ios/**",
 ]
+
+[dependencies]
+xdispatch-core = { path = "../xdispatch-core", version = "0.1.0" }

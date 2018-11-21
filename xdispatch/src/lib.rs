@@ -1,4 +1,16 @@
 /*!
+**This crate is a fork of Steven Sheldon's [`dispatch`] (Rust wrapper for Apple's GCD)**,
+which is licensed under the MIT license.
+
+[`dispatch`]: http://github.com/SSheldon/rust-dispatch
+
+For platforms other than macOS, it links `xdispach-core` that provides
+a statically linked version of [XDispatch], a cross-platform port of GCD.
+
+[XDispatch]: http://opensource.mlba-team.de/xdispatch/
+
+# About the wrapper
+
 Rust wrapper for Apple's Grand Central Dispatch (GCD).
 
 GCD is an implementation of task parallelism that allows tasks to be submitted
@@ -13,7 +25,7 @@ Serial queues execute tasks serially in FIFO order. The application's main
 queue is serial and can be accessed through the `Queue::main` function.
 
 ```
-use dispatch::{Queue, QueueAttribute};
+use xdispatch::{Queue, QueueAttribute};
 
 let queue = Queue::create("com.example.rust", QueueAttribute::Serial);
 queue.async(|| println!("Hello"));
@@ -29,7 +41,7 @@ concurrent queues that can be accessed through the `Queue::global` function.
 and `map`:
 
 ```
-use dispatch::{Queue, QueuePriority};
+use xdispatch::{Queue, QueuePriority};
 
 let queue = Queue::global(QueuePriority::Default);
 

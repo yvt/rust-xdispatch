@@ -1,8 +1,8 @@
-extern crate dispatch;
+extern crate xdispatch;
 
 use std::io;
 use std::process::exit;
-use dispatch::{Queue, QueuePriority};
+use xdispatch::{Queue, QueuePriority};
 
 /// Prompts for a number and adds it to the given sum.
 ///
@@ -46,6 +46,6 @@ fn main() {
     prompt(0, Queue::global(QueuePriority::Default));
 
     unsafe {
-        dispatch::ffi::dispatch_main();
+        xdispatch::ffi::dispatch_main();
     }
 }
