@@ -17,8 +17,7 @@
 //! # Differences from the original XDispatch
 //!
 //!  - Does not make use of CMake.
-//!  - TODO: Some parts of the platform abstraction were replaced with
-//!    platform-indepependent code written in Rust.
+//!  - Some parts of the platform abstraction were rewritten using Rust.
 //!
 //! # License
 //!
