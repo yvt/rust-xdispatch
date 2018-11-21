@@ -4,7 +4,7 @@ use std::env;
 
 const SUPPORTED_TARGETS: &[&str] = &[
     "-darwin",
-    "-linux",
+    "-linux-gnu",
     "-windows-msvc",
     "-windows-gcc",
 ];
@@ -44,9 +44,6 @@ fn main() {
         }
     } else {
         build
-            .file("xdispatch/libpthread_workqueue/src/linux/load.c")
-            .file("xdispatch/libpthread_workqueue/src/linux/thread_info.c")
-            .file("xdispatch/libpthread_workqueue/src/linux/thread_rt.c")
             .file("xdispatch/libpthread_workqueue/src/posix/manager.c")
             .file("xdispatch/libpthread_workqueue/src/posix/thread_info.c")
             .file("xdispatch/libpthread_workqueue/src/posix/thread_rt.c");
