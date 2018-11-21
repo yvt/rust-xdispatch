@@ -35,7 +35,7 @@ fn main() {
         .file("xdispatch/libpthread_workqueue/src/api.c")
         .file("xdispatch/libpthread_workqueue/src/witem_cache.c")
         .include("xdispatch/libpthread_workqueue/include")
-        .include("xdispatch/libpthread_workqueue")
+        .include("xdispatch/libpthread_workqueue/src")
         .compile("libpthread_workqueue.a");
 
     let mut build = cc::Build::new();
@@ -63,7 +63,7 @@ fn main() {
         .file("xdispatch/libkqueue/src/common/kqueue.c")
         .file("xdispatch/libkqueue/src/common/map.c")
         .include("xdispatch/libkqueue/include")
-        .include("xdispatch/libkqueue/common")
+        .include("xdispatch/libkqueue/src/common")
         .compile("libkqueue.a");
 
     let mut build = cc::Build::new();
@@ -94,6 +94,8 @@ fn main() {
         .file("xdispatch/libdispatch/src/time.c")
         .file("xdispatch/libdispatch/src/shims/time.c")
         .file("xdispatch/libdispatch/src/shims/tsd.c")
+        .include("xdispatch/libpthread_workqueue/include")
+        .include("xdispatch")
         .include("xdispatch/libdispatch/include")
         .compile("libdispatch.a");
 }

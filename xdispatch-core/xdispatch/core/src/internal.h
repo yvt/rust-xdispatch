@@ -51,7 +51,7 @@
 #include <math.h>
 #include <pthread_workqueue.h>
 #ifdef HAVE_LIBKQUEUE_H
-# include <kqueue/sys/event.h>
+# include <libkqueue/include/sys/event.h>
 #else
 # include <sys/event.h>
 #endif
