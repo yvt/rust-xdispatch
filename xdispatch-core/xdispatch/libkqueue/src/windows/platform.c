@@ -22,45 +22,13 @@ struct event_buf {
     OVERLAPPED *overlap;
 };
 
-#if NO_IMPLICIT_TLS_WORKAROUND
-
 /*
  * Per-thread evt event buffer used to ferry data between
- * kevent_wait() and kevent_copyout().
+ * kevent_wait() and kevent_copyout() is managed by Rust code.
  */
-static __thread struct event_buf iocp_buf;
+#define iocp_buf (*libkqueue_iocp_buf())
 
-#else
-
-/*
- * Per-thread evt event buffer used to ferry data between
- * kevent_wait() and kevent_copyout().
- */
-#define iocp_buf (*( (struct event_buf*)TlsGetValue(event_buf_tls) ))
-static DWORD event_buf_tls;
-
-
-// workaround for implicit TLS initialization
-// bug on Windows prior to Windows Vista
-void libkqueue_thread_attach(){
-	struct event_buf* ev_buf = malloc(sizeof(struct event_buf));
-	assert(ev_buf);
-	TlsSetValue(event_buf_tls, ev_buf);
-}
-
-void libkqueue_thread_detach(){
-	struct event_buf* ev_buf = TlsGetValue(event_buf_tls);
-	assert(ev_buf);
-	free(ev_buf);
-}
-
-void libkqueue_process_attach(){
-	event_buf_tls = TlsAlloc();
-	libkqueue_thread_attach();
-}
-
-#endif
-
+extern struct event_buf *libkqueue_iocp_buf(void);
 
 /* FIXME: remove these as filters are implemented */
 const struct filter evfilt_proc = EVFILT_NOTIMPL;
@@ -84,7 +52,7 @@ BOOL WINAPI DllMain(
         DWORD reason,
         LPVOID unused)
 {
-    switch (reason) { 
+    switch (reason) {
         case DLL_PROCESS_ATTACH:
 
 #if XXX
@@ -120,7 +88,7 @@ BOOL WINAPI DllMain(
 int
 windows_kqueue_init(struct kqueue *kq)
 {
-    kq->kq_iocp = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, 
+    kq->kq_iocp = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL,
                                          (ULONG_PTR) 0, 0);
     if (kq->kq_iocp == NULL) {
         dbg_lasterror("CreateIoCompletionPort");
@@ -165,7 +133,7 @@ windows_kevent_wait(struct kqueue *kq, int no, const struct timespec *timeout)
 	int retval;
     DWORD       timeout_ms;
     BOOL        success;
-    
+
     if (timeout == NULL) {
         timeout_ms = INFINITE;
     } else if ( timeout->tv_sec == 0 && timeout->tv_nsec < 1000000 ) {
@@ -184,10 +152,10 @@ windows_kevent_wait(struct kqueue *kq, int no, const struct timespec *timeout)
 #if 0
     if(timeout_ms <= 0)
         dbg_printf("Woop, not waiting !?");
-#endif        
+#endif
     memset(&iocp_buf, 0, sizeof(iocp_buf));
-    success = GetQueuedCompletionStatus(kq->kq_iocp, 
-            &iocp_buf.bytes, &iocp_buf.key, &iocp_buf.overlap, 
+    success = GetQueuedCompletionStatus(kq->kq_iocp,
+            &iocp_buf.bytes, &iocp_buf.key, &iocp_buf.overlap,
             timeout_ms);
     if (success) {
         return (1);
@@ -228,9 +196,9 @@ windows_kevent_copyout(struct kqueue *kq, int nready,
      * Certain flags cause the associated knote to be deleted
      * or disabled.
      */
-    if (eventlist->flags & EV_DISPATCH) 
+    if (eventlist->flags & EV_DISPATCH)
         knote_disable(filt, kn); //TODO: Error checking
-    if (eventlist->flags & EV_ONESHOT) { 
+    if (eventlist->flags & EV_ONESHOT) {
         knote_delete(filt, kn); //TODO: Error checking
     } else {
         knote_unlock(kn);
@@ -286,7 +254,7 @@ windows_get_descriptor_type(struct knote *kn)
         slen = sizeof(lsock);
         lsock = 0;
         i = getsockopt(kn->kev.ident, SOL_SOCKET, SO_ACCEPTCONN, (char *) &lsock, &slen);
-        if (i == 0 && lsock) 
+        if (i == 0 && lsock)
             kn->kn_flags |= KNFL_PASSIVE_SOCKET;
     }
 

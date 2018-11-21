@@ -39,7 +39,7 @@ get_fd_limit(void)
     return 65536;
 #else
     struct rlimit rlim;
-    
+
     if (getrlimit(RLIMIT_NOFILE, &rlim) < 0) {
         dbg_perror("getrlimit(2)");
         return (65536);
@@ -70,14 +70,13 @@ libkqueue_init(void)
 		tmpFlag |= _CRTDBG_CHECK_ALWAYS_DF;
 		_CrtSetDbgFlag(tmpFlag);
 	}
-	libkqueue_process_attach();
 # endif /* _WIN32 */
     }
 #endif
 
    kqmap = map_new(get_fd_limit()); // INT_MAX
    if (kqmap == NULL)
-       abort(); 
+       abort();
    if (knote_init() < 0)
        abort();
    dbg_puts("library initialization complete");
@@ -88,7 +87,7 @@ libkqueue_init(void)
 static int
 kqueue_cmp(struct kqueue *a, struct kqueue *b)
 {
-    return memcmp(&a->kq_id, &b->kq_id, sizeof(int)); 
+    return memcmp(&a->kq_id, &b->kq_id, sizeof(int));
 }
 
 /* Must hold the kqtree_mtx when calling this */

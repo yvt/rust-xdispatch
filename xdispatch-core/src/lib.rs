@@ -68,6 +68,9 @@ pub fn init() {
     INITED.call_once(|| unsafe { libdispatch_ctor() });
 }
 
+#[cfg(target_os = "windows")]
+mod windows;
+
 #[cfg_attr(
     any(target_os = "macos", target_os = "ios"),
     link(name = "System", kind = "dylib")
