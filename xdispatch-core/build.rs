@@ -2,9 +2,19 @@ extern crate cc;
 
 use std::env;
 
+const SUPPORTED_TARGETS: &[&str] = &[
+    "darwin",
+    "linux",
+];
+
 fn main() {
     let target = env::var("TARGET").unwrap();
     let target_parts: Vec<_> = target.split('-').collect();
+
+    if !SUPPORTED_TARGETS.iter().any(|t| &target_parts[2] == t) {
+        panic!("xdispatch-core does not support target: {}", target);
+    }
+
     let has_native_dispatch = target.ends_with("-apple-darwin");
 
     if has_native_dispatch {
@@ -27,6 +37,9 @@ fn main() {
             .file("xdispatch/libpthread_workqueue/src/windows/thread_rt.c");
     } else {
         build
+            .file("xdispatch/libpthread_workqueue/src/linux/load.c")
+            .file("xdispatch/libpthread_workqueue/src/linux/thread_info.c")
+            .file("xdispatch/libpthread_workqueue/src/linux/thread_rt.c")
             .file("xdispatch/libpthread_workqueue/src/posix/manager.c")
             .file("xdispatch/libpthread_workqueue/src/posix/thread_info.c")
             .file("xdispatch/libpthread_workqueue/src/posix/thread_rt.c");
