@@ -1,5 +1,5 @@
 //! `xdispatch-core` provides a binding to [XDispatch] as well as a statically
-//! linked version of XDispatch itself and its dependencies, 
+//! linked version of XDispatch itself and its dependencies,
 //! [libpthread_workqueue] and [libkqueue].
 //!
 //! [XDispatch]: http://opensource.mlba-team.de/xdispatch/
@@ -9,7 +9,7 @@
 //! This crate simply uses the system-provided version of GCD
 //! for the macOS/iOS targets.
 //!
-//! The binding is based on Steven Sheldon's [`dispatch`] (Rust wrapper for 
+//! The binding is based on Steven Sheldon's [`dispatch`] (Rust wrapper for
 //! Apple's GCD), which is licensed under the MIT license.
 //!
 //! [`dispatch`]: http://github.com/SSheldon/rust-dispatch
@@ -19,6 +19,13 @@
 //!  - Does not make use of CMake.
 //!  - TODO: Some parts of the platform abstraction were replaced with
 //!    platform-indepependent code written in Rust.
+//!
+//! # License
+//!
+//! This crate is licensed under [the Apache License 2.0]. See
+//! `xdispatch/NOTICE` for details.
+//!
+//! [the Apache License 2.0]: http://www.apache.org/licenses/LICENSE-2.0
 //!
 #![allow(missing_docs)]
 #![allow(non_camel_case_types)]
