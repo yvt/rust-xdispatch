@@ -247,6 +247,8 @@ mod tests {
         use std::os::raw::c_void;
         use std::ptr;
 
+        init();
+
         extern "C" fn serial_queue_test_add(num: *mut c_void) {
             unsafe {
                 *(num as *mut u32) = 1;
