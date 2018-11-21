@@ -181,16 +181,16 @@ extern "C" {
 
 #include <time.h> // for struct timespec
 
-__declspec(dllexport) int
+/* __declspec(dllexport) */ int
 kqueue(void);
 
-__declspec(dllexport) int
+/* __declspec(dllexport) */ int
 kevent(int kq, const struct kevent *changelist, int nchanges,
 	    struct kevent *eventlist, int nevents,
 	    const struct timespec *timeout);
 
 #ifdef MAKE_STATIC
-__declspec(dllexport) int
+/* __declspec(dllexport) */ int
 libkqueue_init();
 #endif
 

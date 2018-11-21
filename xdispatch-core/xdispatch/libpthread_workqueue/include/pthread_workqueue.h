@@ -31,7 +31,7 @@
 #define _PTHREAD_WORKQUEUE_H
 
 #if _WIN32
-#define _PWQ_EXPORT __declspec(dllexport)
+#define _PWQ_EXPORT /* __declspec(dllexport) */
 #else
 #define _PWQ_EXPORT
 #endif
