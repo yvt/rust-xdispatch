@@ -49,6 +49,16 @@ pub type dispatch_time_t = u64;
 // dispatch_io_interval_flags_t
 pub type dispatch_queue_attr_t = *const dispatch_object_s;
 
+#[cfg(any(target_os = "macos", target_os = "ios"))]
+unsafe fn libdispatch_ctor() {
+    // nothing to do
+}
+
+/// Initialize XDispatch. This function is idempotent.
+pub fn init() {
+    unsafe { libdispatch_ctor() };
+}
+
 #[cfg_attr(
     any(target_os = "macos", target_os = "ios"),
     link(name = "System", kind = "dylib")
@@ -56,6 +66,9 @@ pub type dispatch_queue_attr_t = *const dispatch_object_s;
 extern "C" {
     static _dispatch_main_q: dispatch_object_s;
     static _dispatch_queue_attr_concurrent: dispatch_object_s;
+
+    #[cfg(not(any(target_os = "macos", target_os = "ios")))]
+    fn libdispatch_ctor();
 
     pub fn dispatch_get_global_queue(identifier: c_long, flags: c_ulong) -> dispatch_queue_t;
     pub fn dispatch_queue_create(

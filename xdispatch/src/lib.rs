@@ -191,6 +191,8 @@ impl Queue {
     /// Returns the serial dispatch `Queue` associated with the application's
     /// main thread.
     pub fn main() -> Self {
+        init();
+
         let queue = dispatch_get_main_queue();
         unsafe {
             dispatch_retain(queue);
@@ -201,6 +203,8 @@ impl Queue {
     /// Returns a system-defined global concurrent `Queue` with the specified
     /// priority.
     pub fn global(priority: QueuePriority) -> Self {
+        init();
+
         unsafe {
             let queue = dispatch_get_global_queue(priority.as_raw(), 0);
             dispatch_retain(queue);
@@ -210,6 +214,8 @@ impl Queue {
 
     /// Creates a new dispatch `Queue`.
     pub fn create(label: &str, attr: QueueAttribute) -> Self {
+        init();
+
         let label = CString::new(label).unwrap();
         let queue = unsafe {
             dispatch_queue_create(label.as_ptr(), attr.as_raw())
@@ -464,6 +470,8 @@ pub struct Group {
 impl Group {
     /// Creates a new dispatch `Group`.
     pub fn create() -> Group {
+        init();
+        
         unsafe {
             Group { ptr: dispatch_group_create() }
         }
