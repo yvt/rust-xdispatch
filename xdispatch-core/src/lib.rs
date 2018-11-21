@@ -56,7 +56,9 @@ unsafe fn libdispatch_ctor() {
 
 /// Initialize XDispatch. This function is idempotent.
 pub fn init() {
-    unsafe { libdispatch_ctor() };
+    use std::sync::Once;
+    static INITED: Once = Once::new();
+    INITED.call_once(|| unsafe { libdispatch_ctor() });
 }
 
 #[cfg_attr(
