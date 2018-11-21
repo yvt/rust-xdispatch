@@ -3,15 +3,17 @@ extern crate cc;
 use std::env;
 
 const SUPPORTED_TARGETS: &[&str] = &[
-    "darwin",
-    "linux",
+    "-darwin",
+    "-linux",
+    "-windows-msvc",
+    "-windows-gcc",
 ];
 
 fn main() {
     let target = env::var("TARGET").unwrap();
     let target_parts: Vec<_> = target.split('-').collect();
 
-    if !SUPPORTED_TARGETS.iter().any(|t| &target_parts[2] == t) {
+    if !SUPPORTED_TARGETS.iter().any(|t| target.ends_with(t)) {
         panic!("xdispatch-core does not support target: {}", target);
     }
 
@@ -35,6 +37,11 @@ fn main() {
             .file("xdispatch/libpthread_workqueue/src/windows/platform.c")
             .file("xdispatch/libpthread_workqueue/src/windows/thread_info.c")
             .file("xdispatch/libpthread_workqueue/src/windows/thread_rt.c");
+        if target_parts[0] == "x86_64" {
+            build.define("__x86_64__", None);
+        } else if target_parts[0] == "i386" {
+            build.define("__i386__", None);
+        }
     } else {
         build
             .file("xdispatch/libpthread_workqueue/src/linux/load.c")
