@@ -56,6 +56,8 @@ assert!(nums[0] == "2");
 
 #![warn(missing_docs)]
 
+pub extern crate xdispatch_core as ffi;
+
 use std::cell::UnsafeCell;
 use std::ffi::{CStr, CString};
 use std::mem;
@@ -65,9 +67,6 @@ use std::str;
 use std::time::Duration;
 
 use ffi::*;
-
-/// Raw foreign function interface for libdispatch.
-pub mod ffi;
 
 /// The type of a dispatch queue.
 #[derive(Clone, Debug, Hash, PartialEq)]
