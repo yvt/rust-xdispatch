@@ -217,6 +217,7 @@ pub fn dispatch_get_main_queue() -> dispatch_queue_t {
 }
 
 pub const DISPATCH_QUEUE_SERIAL: dispatch_queue_attr_t = 0 as dispatch_queue_attr_t;
+#[cfg(any(target_os = "macos", target_os = "ios"))]
 pub static DISPATCH_QUEUE_CONCURRENT: &'static dispatch_object_s =
     unsafe { &_dispatch_queue_attr_concurrent };
 
