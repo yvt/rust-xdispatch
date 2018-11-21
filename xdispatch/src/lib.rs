@@ -73,12 +73,14 @@ use ffi::*;
 pub enum QueueAttribute {
     /// The queue executes blocks serially in FIFO order.
     Serial,
-    /// The queue executes blocks concurrently.
+    /// The queue executes blocks concurrently. **Only supported by macOS/iOS**.
+    ///
+    /// This value is treated as `Serial` on a non-macOS/iOS platform.
     Concurrent,
 }
 
 impl QueueAttribute {
-    #[cfg(not(all(test, target_os = "linux")))]
+    #[cfg(any(target_os = "macos", target_os = "ios"))]
     fn as_raw(&self) -> dispatch_queue_attr_t {
         match *self {
             QueueAttribute::Serial => DISPATCH_QUEUE_SERIAL,
@@ -86,7 +88,7 @@ impl QueueAttribute {
         }
     }
 
-    #[cfg(all(test, target_os = "linux"))]
+    #[cfg(not(any(target_os = "macos", target_os = "ios")))]
     fn as_raw(&self) -> dispatch_queue_attr_t {
         // The Linux tests use Ubuntu's libdispatch-dev package, which is
         // apparently really old from before OSX 10.7.
