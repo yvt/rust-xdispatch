@@ -10,14 +10,6 @@ struct timezone
   int  tz_dsttime;     /* type of dst correction */
 };
 
-// quick workaround in case this is included after event.h
-#ifndef _SYS_EVENT_H_
-struct timespec {
-    long tv_sec; /* seconds */
-    long tv_nsec; /* nanoseconds */
-}; 
-#endif
-
 #if defined(_MSC_VER) || defined(_MSC_EXTENSIONS)
 #define DELTA_EPOCH_IN_MICROSECS  11644473600000000Ui64
 #else

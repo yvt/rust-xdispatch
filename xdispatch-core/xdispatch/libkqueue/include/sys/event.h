@@ -35,7 +35,7 @@
 #ifdef __KERNEL__
 #define intptr_t long
 #else
-#include <sys/types.h> 
+#include <sys/types.h>
 #if defined(_WIN32) && !defined(__GNUC__) && _MSC_VER < 1600
 # include "../../src/windows/stdint.h"
 #else
@@ -158,7 +158,7 @@ struct kevent {
 #define NOTE_LINKDOWN	0x0002			/* link is down */
 #define NOTE_LINKINV	0x0004			/* link state is invalid */
 
-/* KLUDGE: This is from <sys/mount.h> on FreeBSD and is used by 
+/* KLUDGE: This is from <sys/mount.h> on FreeBSD and is used by
            the EVFILT_FS filter. */
 /* vfsquery flags */
 #define VQ_NOTRESP      0x0001  /* server down */
@@ -179,10 +179,7 @@ extern "C" {
 
 #ifdef _WIN32
 
-struct timespec {
-    time_t  tv_sec;
-    long    tv_nsec;
-};
+#include <time.h> // for struct timespec
 
 __declspec(dllexport) int
 kqueue(void);

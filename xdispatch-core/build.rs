@@ -30,6 +30,7 @@ fn main() {
     if target_parts[2] == "windows" {
         build
             .define("LIBPTHREAD_WORKQUEUE_EXPORTS", None)
+            .define("WIN_PTHREAD_EXPORT", Some(""))
             .define("MAKE_STATIC", None)
             .define("_USRDLL", None)
             .define("_WINDLL", None)
@@ -86,6 +87,7 @@ fn main() {
     let mut build = cc::Build::new();
     if target_parts[2] == "windows" {
         build
+            .define("WIN_PTHREAD_EXPORT", Some(""))
             .file("xdispatch/core/platform/windows/platform.c")
             .include("xdispatch/core/platform/windows");
     } else {
