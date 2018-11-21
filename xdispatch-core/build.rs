@@ -82,33 +82,33 @@ fn main() {
     let mut build = cc::Build::new();
     if target_parts[2] == "windows" {
         build
-            .file("xdispatch/libdispatch/platform/windows/platform.c")
-            .include("xdispatch/libdispatch/platform/windows");
+            .file("xdispatch/core/platform/windows/platform.c")
+            .include("xdispatch/core/platform/windows");
     } else {
-        build.include("xdispatch/libdispatch/platform/posix");
+        build.include("xdispatch/core/platform/posix");
     }
     build
-        .file("xdispatch/libdispatch/src/apply.c")
-        .file("xdispatch/libdispatch/src/benchmark.c")
-        .file("xdispatch/libdispatch/src/blocks.c")
-        .file("xdispatch/libdispatch/src/continuation_cache.c")
-        .file("xdispatch/libdispatch/src/debug.c")
-        .file("xdispatch/libdispatch/src/legacy.c")
-        .file("xdispatch/libdispatch/src/object.c")
-        .file("xdispatch/libdispatch/src/once.c")
-        .file("xdispatch/libdispatch/src/protocolServer.c")
-        .file("xdispatch/libdispatch/src/protocolUser.c")
-        .file("xdispatch/libdispatch/src/queue.c")
-        .file("xdispatch/libdispatch/src/queue_kevent.c")
-        .file("xdispatch/libdispatch/src/semaphore.c")
-        .file("xdispatch/libdispatch/src/shared_constructor.c")
-        .file("xdispatch/libdispatch/src/source.c")
-        .file("xdispatch/libdispatch/src/source_kevent.c")
-        .file("xdispatch/libdispatch/src/time.c")
-        .file("xdispatch/libdispatch/src/shims/time.c")
-        .file("xdispatch/libdispatch/src/shims/tsd.c")
+        .file("xdispatch/core/src/apply.c")
+        .file("xdispatch/core/src/benchmark.c")
+        .file("xdispatch/core/src/blocks.c")
+        .file("xdispatch/core/src/continuation_cache.c")
+        .file("xdispatch/core/src/debug.c")
+        .file("xdispatch/core/src/legacy.c")
+        .file("xdispatch/core/src/object.c")
+        .file("xdispatch/core/src/once.c")
+        .file("xdispatch/core/src/protocolServer.c")
+        .file("xdispatch/core/src/protocolUser.c")
+        .file("xdispatch/core/src/queue.c")
+        .file("xdispatch/core/src/queue_kevent.c")
+        .file("xdispatch/core/src/semaphore.c")
+        .file("xdispatch/core/src/shared_constructor.c")
+        .file("xdispatch/core/src/source.c")
+        .file("xdispatch/core/src/source_kevent.c")
+        .file("xdispatch/core/src/time.c")
+        .file("xdispatch/core/src/shims/time.c")
+        .file("xdispatch/core/src/shims/tsd.c")
         .include("xdispatch/libpthread_workqueue/include")
         .include("xdispatch")
-        .include("xdispatch/libdispatch/include")
+        .include("xdispatch/core/include")
         .compile("libdispatch.a");
 }
