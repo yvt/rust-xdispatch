@@ -69,7 +69,7 @@ use std::time::Duration;
 use ffi::*;
 
 /// The type of a dispatch queue.
-#[derive(Clone, Debug, Hash, PartialEq)]
+#[derive(Clone, Debug, Hash, PartialEq, Eq, Copy)]
 pub enum QueueAttribute {
     /// The queue executes blocks serially in FIFO order.
     Serial,
@@ -98,7 +98,7 @@ impl QueueAttribute {
 }
 
 /// The priority of a global concurrent queue.
-#[derive(Clone, Debug, Hash, PartialEq)]
+#[derive(Clone, Debug, Hash, PartialEq, Eq, Copy)]
 pub enum QueuePriority {
     /// The queue is scheduled for execution before any default priority or low
     /// priority queue.
@@ -131,6 +131,7 @@ impl QueuePriority {
 ///
 /// For more information, see Apple's [Grand Central Dispatch reference](
 /// https://developer.apple.com/library/mac/documentation/Performance/Reference/GCD_libdispatch_Ref/index.html).
+#[derive(Debug)]
 pub struct Queue {
     ptr: dispatch_queue_t,
 }
@@ -473,7 +474,7 @@ impl Group {
     /// Creates a new dispatch `Group`.
     pub fn create() -> Group {
         init();
-        
+
         unsafe {
             Group { ptr: dispatch_group_create() }
         }
